@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #con {
+            border: 2px solid black;
+            max-width: 500px;
+            padding: 20px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        #con1 {
+            border: 2px solid black;
+            max-width: 500px;
+            padding: 20px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #submitted-data {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #131111;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            max-width: 100%;
+            height: max-content;
+            margin: 20px auto;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+        .success {
+            color: green;
+            font-size: 12px;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 30px;
+            cursor: pointer;
+        }
+        .style {
+            display: inline-block;
+            border: 2px solid black;
+            width: 300px;
+            height: max-content;
+            padding: 10px;
+            margin: 10px;
+        }
+        .set {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            position: relative;
+             left:295px;
+             top:-176px;
+            cursor: pointer;
+        }
+        .set1 {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <form class="form1">
+        <div id="con">
+            <h1>Registration</h1>
+            <label>
+                Name
+                <input type="text" required class="input1">
+            </label>
+            <label>
+                Email
+                <input type="email" required class="input2">
+            </label>
+            <label>
+                Phone number
+                <input type="tel" required class="input3">
+            </label>
+            <label>
+                Description
+                <input type="text" class="input4">
+            </label>
+            <button type="submit" class="btn">Submit</button>
+            <button type="reset">Clear</button>
+           
+        </div>
+    </form>
+ 
+    <div id="submitted-data">
+        <button class="btn3">Clear all</button>
+    </div>
+
+    <script>
+        let form = document.querySelector(".form1");
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let id = users.length;
+        let allData;
+       let dataFrame;
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const name = document.querySelector(".input1").value.trim();
+            const email = document.querySelector(".input2").value.trim();
+            const phone = document.querySelector(".input3").value.trim();
+            const description = document.querySelector(".input4").value.trim();
+
+            let newUser = {
+                id: ++id,
+                name: name,
+                email: email,
+                phoneno: phone,
+                description: description
+            };
+
+            users.push(newUser);
+            localStorage.setItem("users", JSON.stringify(users));
+
+            displayUser(newUser);
+        });
+
+        function displayUser(user) {
+            allData = document.querySelector("#submitted-data");
+             dataFrame = document.createElement("div");
+            dataFrame.classList.add("style");
+
+            const nam = document.createElement("h4");
+            nam.classList.add("set1");
+            nam.textContent = "Name: " + user.name;
+
+            const emai = document.createElement("h4");
+            emai.classList.add("set1");
+            emai.textContent = "Email: " + user.email;
+
+            const ph = document.createElement("h4");
+            ph.classList.add("set1");
+            ph.textContent = "Phone: " + user.phoneno;
+
+            const di = document.createElement("h4");
+            di.classList.add("set1");
+            di.textContent = "Description: " + user.description;
+
+            const crosse = document.createElement("img");
+            crosse.src = "crosse.png";
+            crosse.classList.add("set");
+            let newusers = [];
+            crosse.addEventListener("click", function () {
+                for (let index = 0; index < users.length; index++) {
+                    if(user.id[index] !== users[index]){
+                        newusers.push(users[index]);
+                    }
+                }
+                localStorage.setItem("users", JSON.stringify(users));
+                allData.removeChild(dataFrame);
+            });
+
+            dataFrame.appendChild(nam);
+            dataFrame.appendChild(emai);
+            dataFrame.appendChild(ph);
+            dataFrame.appendChild(di);
+            dataFrame.appendChild(crosse);
+            allData.appendChild(dataFrame);
+        }
+     let btn3 = document.querySelector(".btn3");
+     btn3.addEventListener("click" , fun2);
+     function fun2(){
+     localStorage.clear();
+     for(let i=0 ; i<users.length; i++){
+      allData.removeChild(dataFrame);
+
+     }
+     }
+        
+    </script>
+</body>
+</html>
